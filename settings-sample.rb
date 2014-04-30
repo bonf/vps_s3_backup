@@ -1,6 +1,7 @@
 # EXECUTABLES
 MYSQLDUMP_CMD = '/usr/bin/mysqldump'
 MONGODUMP_CMD = '/usr/bin/mongodump'
+MONGODUMP_CMD = '/usr/bin/pg_dump'
 GZIP_CMD = '/usr/bin/gzip'
 TAR_CMD = '/usr/bin/tar'
 CP_CMD = '/bin/cp'
@@ -39,6 +40,15 @@ MYSQL_PASS = 'XXXXX'
 #    where 200912010423 is the date/time when the script is run
 MONGO_DBS = ['mongo_db_one', 'mongo_db_test']
 MONGO_HOST = 'localhost'
+
+
+# POSTGRESQL CONFIG
+#  * Put the Postgresql table names that you want to back up in the MYSQL_DBS array below
+#    Archive will be named in the format: db-table_name-200912010423.tgz
+#    where 200912010423 is the date/time when the script is run
+PG_DBS = ['application_production', 'wordpress', 'something_else']
+
+
 
 # DIRECTORY BACKUP CONFIG
 #  * Add hash pair for each directory you want to backup

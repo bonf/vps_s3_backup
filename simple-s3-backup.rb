@@ -56,6 +56,26 @@ if defined?(MONGO_DBS)
   FileUtils.remove_dir mdb_dump_dir
 end
 
+
+# Perform Postgresql backups
+ su - postgres -c "pg_dump provavox3   > /tmp/prova.sql" 
+if defined?(PG_DBS)
+  PG_DBS.each do |db|
+    db_filename = "db-#{db}-#{timestamp}.gz"
+    # allow check for a blank or non existent password
+    if defined?(MYSQL_PASS) and MYSQL_PASS!=nil and MYSQL_PASS!=""
+      password_param = "-p#{MYSQL_PASS}" 
+    else
+      password_param = ""
+    end
+    system("su - postgres -c 'pg_dump provavox3  | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}' ")
+    S3Object.store(db_filename, open("#{full_tmp_path}/#{db_filename}"), S3_BUCKET)
+  end
+end
+
+
+
+
 # Perform directory backups
 if defined?(DIRECTORIES)
   DIRECTORIES.each do |name, dir|
