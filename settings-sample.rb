@@ -1,7 +1,7 @@
 # EXECUTABLES
 MYSQLDUMP_CMD = '/usr/bin/mysqldump'
 MONGODUMP_CMD = '/usr/bin/mongodump'
-MONGODUMP_CMD = '/usr/bin/pg_dump'
+PGDUMP_CMD = '/usr/bin/pg_dump'
 GZIP_CMD = '/usr/bin/gzip'
 TAR_CMD = '/usr/bin/tar'
 CP_CMD = '/bin/cp'

@@ -12,7 +12,7 @@ require 'settings'
 
 # Initial setup
 timestamp = Time.now.strftime("%Y%m%d-%H%M")
-full_tmp_path = File.join(File.expand_path(File.dirname(__FILE__)), TMP_BACKUP_PATH)
+full_tmp_path = "#{TMP_BACKUP_PATH}/vps_simple_backup_#{timestamp}"
 
 # Find/create the backup bucket
 if Service.buckets.collect{ |b| b.name }.include?(S3_BUCKET)
@@ -58,7 +58,6 @@ end
 
 
 # Perform Postgresql backups
- su - postgres -c "pg_dump provavox3   > /tmp/prova.sql" 
 if defined?(PG_DBS)
   PG_DBS.each do |db|
     db_filename = "db-#{db}-#{timestamp}.gz"
