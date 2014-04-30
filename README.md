@@ -1,7 +1,9 @@
-Simple S3 Backup
+Vps S3 Backup
 ----------------
 
 A simple Ruby script to back up MySQL database tables, MongoDB databases, full directories, and groups of single files to Amazon S3 (Simple Storage Service).
+
+Based on the original work by Bill Turner <https://github.com/billturner/simple-s3-backup>
 
 **Steps for using:**
 
