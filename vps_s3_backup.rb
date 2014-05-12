@@ -60,7 +60,7 @@ end
 # Perform Postgresql backups
 if defined?(PG_DBS)
   PG_DBS.each do |db|
-    db_filename = "db-#{db}-#{timestamp}.gz"
+    db_filename = "pg-#{db}-#{timestamp}.gz"
     system("su - postgres -c 'pg_dump #{db}  | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}' ")
     S3Object.store(db_filename, open("#{full_tmp_path}/#{db_filename}"), S3_BUCKET)
   end
