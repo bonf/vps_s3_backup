@@ -28,6 +28,7 @@ end
 
 # Create tmp directory
 FileUtils.mkdir_p full_tmp_path
+FileUtils.chmod(00777, full_tmp_path)
 
 # Perform MySQL backups
 if defined?(MYSQL_DBS)
