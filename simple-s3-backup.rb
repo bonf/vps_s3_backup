@@ -11,11 +11,11 @@ include AWS::S3
 require 'settings'
 
 # Initial setup
-timestamp = Time.now.strftime("%Y%m%d-%H%M")
+timestamp = Time.now.strftime('%Y%m%d-%H%M')
 full_tmp_path = "#{TMP_BACKUP_PATH}/vps_simple_backup_#{timestamp}"
 
 # Find/create the backup bucket
-if Service.buckets.collect{ |b| b.name }.include?(S3_BUCKET)
+if Service.buckets.map{ |b| b.name }.include?(S3_BUCKET)
   bucket = Bucket.find(S3_BUCKET)
 else
   begin
@@ -34,10 +34,10 @@ if defined?(MYSQL_DBS)
   MYSQL_DBS.each do |db|
     db_filename = "db-#{db}-#{timestamp}.gz"
     # allow check for a blank or non existent password
-    if defined?(MYSQL_PASS) and MYSQL_PASS!=nil and MYSQL_PASS!=""
-      password_param = "-p#{MYSQL_PASS}" 
+    if defined?(MYSQL_PASS) && MYSQL_PASS != nil && MYSQL_PASS != ""
+      password_param = "-p#{MYSQL_PASS}"
     else
-      password_param = ""
+      password_param = ''
     end
     system("#{MYSQLDUMP_CMD} -u #{MYSQL_USER} #{password_param} --single-transaction --add-drop-table --add-locks --create-options --disable-keys --extended-insert --quick #{db} | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}")
     S3Object.store(db_filename, open("#{full_tmp_path}/#{db_filename}"), S3_BUCKET)
@@ -56,24 +56,14 @@ if defined?(MONGO_DBS)
   FileUtils.remove_dir mdb_dump_dir
 end
 
-
 # Perform Postgresql backups
 if defined?(PG_DBS)
   PG_DBS.each do |db|
     db_filename = "db-#{db}-#{timestamp}.gz"
-    # allow check for a blank or non existent password
-    if defined?(MYSQL_PASS) and MYSQL_PASS!=nil and MYSQL_PASS!=""
-      password_param = "-p#{MYSQL_PASS}" 
-    else
-      password_param = ""
-    end
-    system("su - postgres -c 'pg_dump provavox3  | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}' ")
+    system("su - postgres -c 'pg_dump #{db}  | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}' ")
     S3Object.store(db_filename, open("#{full_tmp_path}/#{db_filename}"), S3_BUCKET)
   end
 end
-
-
-
 
 # Perform directory backups
 if defined?(DIRECTORIES)
@@ -111,7 +101,7 @@ end
 FileUtils.remove_dir full_tmp_path
 
 # Now, clean up unwanted archives
-cutoff_date = Time.now.utc.to_i - (DAYS_OF_ARCHIVES * 86400)
-bucket.objects.select{ |o| o.last_modified.to_i < cutoff_date }.each do |f|
+cutoff_date = Time.now.utc.to_i - (DAYS_OF_ARCHIVES * 86_400)
+bucket.objects.select { |o| o.last_modified.to_i < cutoff_date }.each do |f|
   S3Object.delete(f.key, S3_BUCKET)
 end

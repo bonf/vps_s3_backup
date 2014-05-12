@@ -7,7 +7,8 @@ TAR_CMD = '/usr/bin/tar'
 CP_CMD = '/bin/cp'
 
 # PATHS
-TMP_BACKUP_PATH = 'temp' # Will be created (and removed) inside the directory where the script is installed
+#TMP_BACKUP_PATH = 'temp' # Will be created (and removed) inside the directory where the script is installed
+TMP_BACKUP_PATH = '/tmp' # Base directory. A subdirectory will be created (and removed) inside the directory specified here
 
 # use SSL to transmit backups to S3 (a good idea)
 USE_SSL = true
